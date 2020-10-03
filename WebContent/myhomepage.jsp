@@ -16,7 +16,7 @@ String username= (String)session.getAttribute("username");
 	<h1>Welcome to your Home Page <%=username %></h1>
 	<form method="post" action="myhomepage.jsp">
 		<div class="horizontal" style="width: 100%">
-			<button style="width: 50%" name="pageupdate">Page Update</button>
+			<button style="width: 50%" name="pageupdate">Update your Info</button>
 			<button style="width: 50%" name="products">Products</button>
 			<button style="width: 50%" name="basket">Basket</button>
 			<button style="width: 50%" name="logout">Logout</button>

@@ -3,6 +3,8 @@
 <!DOCTYPE html>
 <%@ page import="java.sql.*"%>
 <%@page session="true" %>
+<%@ page import="javax.swing.JOptionPane" %>
+<%@ page import ="javax.swing.JDialog" %>
 
 <html>
 <head>
@@ -47,7 +49,7 @@ String username=(String) session.getAttribute("username");
 			<td><input type="text" id="datepicker-13" name="birthday" size=12 /></td>
 		</tr>
 		<tr>
-				<td colspan=2><input type=submit /></td>
+				<td colspan=2><input type=submit value="Update Info" /></td>
 		</tr>
 	</table>
 </form>
@@ -65,17 +67,40 @@ String username=(String) session.getAttribute("username");
 				System.out.println("ERROR_ERROR");
 			}
 			if (connection!=null) {
+				boolean status=false;
 				
-				if ((name == null && surname == null && birthday == null) ) {
-					System.out.println("GOTHERE");
-					//request.setAttribute("message", "Empty Attributes");
-					//response.sendRedirect("pageupdate.jsp");
+				String oldName="",oldDOB="",oldSurname="";
+				try (PreparedStatement preparedStatement = connection.prepareStatement("select * from users where username = ? ")) {
+					preparedStatement.setString(1, username);
+					//preparedStatement.setString(2, password);
+					System.out.println(preparedStatement);
+					ResultSet rs = preparedStatement.executeQuery();
+					status = rs.next();
+					oldName= rs.getString(2);
+					oldDOB= rs.getString(3);
+					oldSurname= rs.getString(5);
+					System.out.println(rs.getString(5));
+				} catch (SQLException e) {
+					System.out.println("ERROR");
 				}
-				else if ((name != null) && (username !=null) && (birthday != null)) {
+				if (status!=false) {    // CHECK IF THERE IS AN ACTUAL USER
+					if ((name == null && surname == null && birthday == null) ) {
+					System.out.println("GOTHERE");
+					
+					}
+					else if ((name != "") || (surname !="") || (birthday != "")) {
+						String newName,newSurname,newBirthday;
+						if (name =="") newName=oldName; 
+						else 	newName=name;
+						if (surname =="") newSurname=oldSurname; 
+						else 	newSurname=surname;
+						if (birthday =="") newBirthday=oldDOB; 
+						else 	newBirthday=birthday;
+			
 						PreparedStatement preparedStatement =  connection.prepareStatement( "update users set name = ?, date_of_birth = ?, surname = ? where username = ?;");
-						preparedStatement.setString(1, name);
-						preparedStatement.setString(3,surname);
-						preparedStatement.setString(2,birthday);
+						preparedStatement.setString(1, newName);
+						preparedStatement.setString(3,newSurname);
+						preparedStatement.setString(2,newBirthday);
 						preparedStatement.setString(4,username);
 						System.out.println(preparedStatement);
 						try {
@@ -88,11 +113,21 @@ String username=(String) session.getAttribute("username");
 							response.sendRedirect("login.jsp");
 							System.out.println("ERROR");
 						} 
+					}
 				}
-			 } 
+				else {
+					JOptionPane optionPane = new JOptionPane("Error You are not Registered Redirecting to signup page",JOptionPane.WARNING_MESSAGE);
+					JDialog dialog = optionPane.createDialog("Username Not Found");
+					dialog.setAlwaysOnTop(true); // to show top of all other application
+					dialog.setVisible(true); 
+					response.sendRedirect("newuser.jsp");
+				}
+				
+			}
 			else {
 				response.sendRedirect("login.jsp");
 			}
+		 
 %>
 </body>
 </html>

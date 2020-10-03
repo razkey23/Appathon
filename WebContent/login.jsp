@@ -3,6 +3,8 @@
 <!DOCTYPE html>
 <%@ page import="java.sql.*"%>
 <%@page session="true" %>
+<%@ page import="javax.swing.JOptionPane" %>
+<%@ page import ="javax.swing.JDialog" %>
 <%
  Connection conn = null ;
  Connection connection = null;
@@ -37,7 +39,7 @@
 			<td><input type="password" name="password" size=12 /></td>
 		</tr>
 		<tr>
-				<td colspan=2><input type=submit /></td>
+				<td colspan=2><input type=submit value="Login"/></td>
 		</tr>
 	</table>
 	</form>
@@ -70,14 +72,36 @@
 					System.out.println(username);
 				}
 				else {
+					try (PreparedStatement preparedStatement = connection.prepareStatement("select * from users where username = ? ")) {
+						preparedStatement.setString(1, username);
+						//preparedStatement.setString(2, password);
+						//System.out.println(preparedStatement);
+						ResultSet rs = preparedStatement.executeQuery();
+						status = rs.next();
+					} catch (SQLException e) {
+						System.out.println("ERROR");
+					}
+					if (status != false) {
+						JOptionPane optionPane = new JOptionPane("Error Wrong Password",JOptionPane.WARNING_MESSAGE);
+						JDialog dialog = optionPane.createDialog("Incorrect Password");
+						dialog.setAlwaysOnTop(true); // to show top of all other application
+						dialog.setVisible(true); 
+						response.sendRedirect("login.jsp");
+					}
+					else {
+					JOptionPane optionPane = new JOptionPane("Error You are not Registered Redirecting to signup page",JOptionPane.WARNING_MESSAGE);
+					JDialog dialog = optionPane.createDialog("Username Not Found");
+					dialog.setAlwaysOnTop(true); // to show top of all other application
+					dialog.setVisible(true); 
 					session.setAttribute("username",username);
 					response.sendRedirect("newuser.jsp");
+					}
 				}
 		}
 		String test=(String)session.getAttribute("username");
 	
 	%>
-    <h1> Thank you for loging in user <%=test%></h1>
+    <h1> Thank you for logging in user <%=test%></h1>
 	<%
 	}
 	%>

@@ -3,6 +3,8 @@
 <!DOCTYPE html>
 <%@ page import="java.sql.*"%>
 <%@page session="true" %>
+<%@ page import="javax.swing.JOptionPane" %>
+<%@ page import ="javax.swing.JDialog" %>
 <%
  Connection conn = null ;
  Connection connection = null;
@@ -52,12 +54,13 @@
 				<td><input type="password" name="password" size=12 /></td>
 			</tr>
 			<tr>
-				<td colspan=2><input type=submit /></td>
+				<td colspan=2><input type=submit value="Sign Up" /></td>
 			</tr>
 		</table>
 	</form>
-	<%  if (request.getParameter("username") != null && request.getParameter("password") != null ) {
-		 String destination= "newuser.jsp";
+	<%  
+		if (request.getParameter("username") != null && request.getParameter("password") != "" && request.getParameter("name") != ""  && request.getParameter("surname") != "" && request.getParameter("birthday") != "" ) {
+		 String destination= "login.jsp";
 		 username=request.getParameter("username");
 		//CHECK FOR EXISTING USER
 		try {	connection = (Connection)DriverManager.getConnection("jdbc:mysql://localhost:3306/project","root","password");
@@ -75,6 +78,11 @@
 				}
 				if (status) {
 					session.setAttribute("username",null);
+					JOptionPane optionPane = new JOptionPane("Error You are already Registered,Redirecting to login",JOptionPane.WARNING_MESSAGE);
+					JDialog dialog = optionPane.createDialog("Username Already used");
+					dialog.setAlwaysOnTop(true); // to show top of all other application
+					dialog.setVisible(true); 
+					destination= "newuser.jsp";
 				}
 				else {
 					String name = request.getParameter("name");

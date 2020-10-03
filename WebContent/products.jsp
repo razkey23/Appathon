@@ -52,33 +52,6 @@ h1>a {
   visibility: visible;
 }
 
-
-
-
-
-
-/*https://www.w3schools.com/css/css_tooltip.asp
-.tooltip {
-	position: relative;
-	display: inline-block;
-}
-/*.tooltip .tooltiptext {
-	visibility: hidden;
-	width: 140px;
-	background-color: black;
-	color: #fff;
-	text-align: center;
-	border-radius: 4px;
-	padding: 5px 0;
-	/* Position the tooltip 
-	position: absolute;
-	z-index: 1;
-	top: -5px;
-	left: 120%;
-} 
-.tooltip:hover .tooltiptext {
-	visibility: visible;
-}  */
 </style>
 
 
@@ -88,7 +61,7 @@ h1>a {
 String username= (String)session.getAttribute("username");
  %>
  
-<title>Insert title here</title>
+<title>Product List</title>
 </head>
 <body>
 	<form method="post" action="products.jsp">
@@ -145,7 +118,7 @@ String username= (String)session.getAttribute("username");
 					src="C:\Users\razkey\eclipse-workspace\dke\WebContent\images/<%=image%>.jpg" width="100" height="100"></td>
 						<td><%=name%></td>
 						<td style="text-align: center"><div class="tooltip">
-						<%=price%> <span class="tooltiptext"><%="with Greece's 24% VAT "+vax%> </span></div></td>
+						<%=price%> <span class="tooltiptext"><%="with 24% VAT "+vax%> </span></div></td>
 						
 						<td><input type="submit" name="<%=name %>"  value="Add To Cart" id="tocart" /> </td>
 					

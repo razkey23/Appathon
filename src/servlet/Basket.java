@@ -139,12 +139,13 @@ public class Basket extends HttpServlet {
 							Connection conn = (Connection)DriverManager.getConnection("jdbc:mysql://localhost:3306/project","root","password");
 							Statement statement = conn.createStatement();
 							String sql = "INSERT INTO orders (username, idproducts,sum) VALUES( \"" + username  + "\" ,\"" + ordersid + "\"  , \"" + totalSum + "\") ;";
-							int result = statement.executeUpdate(sql);
+							statement.executeUpdate(sql);
 						
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						} 
+						//GET THE LAST INSERTED ELEMENT INTO MY DB, SO THAT I CAN INSERT THOSE DATA INTO THE FOLLOWING FILE
 						String id= null;
 						try {
 							Connection connection = (Connection)DriverManager.getConnection("jdbc:mysql://localhost:3306/project","root","password");

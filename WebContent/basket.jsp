@@ -6,6 +6,8 @@
 <%@ page import="java.util.*"%>
 <%@ page import="models.Product"%>
 <%@ page import="servlet.Basket"%>
+<%@ page import="javax.swing.JOptionPane" %>
+
 <html>
 <head>
 <meta charset="ISO-8859-1">
@@ -41,7 +43,7 @@ margin-bottom:15px;
  			<span>Your Cart</span>
  			<br />
  				<a> 
- 					<button name="continueBuying">Continue Buying</button>
+ 					<button name="continueBuying">Back to Products</button>
  					<button name="Clear Basket">Clear Basket</button>
  		    	</a>
  		</h1>
@@ -150,13 +152,13 @@ margin-bottom:15px;
  					<tr class="separator" />
  				</table>
  				
- 			<!-- <tr> -->	
+ 				
 					<td style="text-align: center">Enter Voucher Code Here:</td>
 					<td style="text-align: center"><input type="text" name="voucher" ></td>
 					<td style="text-align:left"><input type="submit" name="checkVoucher" value="Check" /></td>
-			<!-- </tr> -->	
 			
- 		<!--  </table> -->
+			
+ 	
  		<h3>
  			<%
  			String countries[][]= {
